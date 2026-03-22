@@ -61,6 +61,15 @@ server.post<{ Body: z.infer<typeof productSchema> }>(API_PRODUCTS, async (reques
   return reply.status(201).send({ data: newProduct });
 });
 
+server.setNotFoundHandler((_request, reply) => {
+  reply.status(404).send({ error: 'Not found' });
+});
+
+server.setErrorHandler((error, _request, reply) => {
+  console.log('Internal server error: ', error)
+  reply.status(500).send({ error: 'Internal server error' });
+});
+
 server.listen({ port: PORT }, (err) => {
   if (err) {
     console.error(err);
